@@ -844,6 +844,11 @@ $(INSTALLED_SYSTEMIMAGE): $(BUILT_SYSTEMIMAGE) $(RECOVERY_FROM_BOOT_PATCH) | $(A
 	$(copy-file-to-target)
 	$(hide) $(call assert-max-image-size,$@ $(RECOVERY_FROM_BOOT_PATCH),$(BOARD_SYSTEMIMAGE_PARTITION_SIZE),yaffs)
 
+ifneq ($(MKSQUASHFS),)
+$(PRODUCT_OUT)/system.sfs: $(BUILT_SYSTEMIMAGE)
+	$(call build-squashfs-target,$^,$@)
+endif
+
 systemimage: $(INSTALLED_SYSTEMIMAGE)
 
 .PHONY: systemimage-nodeps snod
