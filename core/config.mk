@@ -79,6 +79,8 @@ BUILD_COPY_HEADERS := $(BUILD_SYSTEM)/copy_headers.mk
 BUILD_NATIVE_TEST := $(BUILD_SYSTEM)/native_test.mk
 BUILD_HOST_NATIVE_TEST := $(BUILD_SYSTEM)/host_native_test.mk
 BUILD_NOTICE_FILE := $(BUILD_SYSTEM)/notice_files.mk
+BUILD_PREBUILT_BUNDLE_CREATE := $(BUILD_SYSTEM)/prebuilt_bundle_create.mk
+BUILD_PREBUILT_BUNDLE := $(BUILD_SYSTEM)/prebuilt_bundle.mk
 
 -include cts/build/config.mk
 
