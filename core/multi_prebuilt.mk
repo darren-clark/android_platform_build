@@ -41,6 +41,8 @@ multi_prebuilt_once := true
 # $(6): UNINSTALLABLE_MODULE
 # $(7): BUILT_MODULE_STEM
 # $(8): LOCAL_STRIP_MODULE
+# $(9): LOCAL_MODULE_PATH
+# $(10): LOCAL_CERTIFICATE
 #
 # Elements in the file list may be bare filenames,
 # or of the form "<modulename>:<filename>".
@@ -71,9 +73,18 @@ $(foreach t,$(1), \
    , \
     $(eval LOCAL_BUILT_MODULE_STEM := $(notdir $(LOCAL_SRC_FILES))) \
    ) \
-  $(eval LOCAL_MODULE_SUFFIX := $(suffix $(LOCAL_SRC_FILES))) \
+  $(if $(strip $(filter ETC,$(module_class))), \
+    , \
+    $(eval LOCAL_MODULE_SUFFIX := $(suffix $(LOCAL_SRC_FILES))) \
+   ) \
   $(if $(filter user,$(TARGET_BUILD_VARIANT)), \
     $(eval LOCAL_STRIP_MODULE := $(8))) \
+  $(if $(9), \
+    $(eval LOCAL_MODULE_PATH := $(9)) \
+   ) \
+  $(if $(10), \
+    $(eval LOCAL_CERTIFICATE := $(strip $(10))) \
+   ) \
   $(eval include $(BUILD_PREBUILT)) \
  )
 endef
