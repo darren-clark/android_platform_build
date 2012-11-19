@@ -197,7 +197,7 @@ else
   BUILD_EMULATOR := true
 endif
 else   # HOST_OS is not darwin
-  BUILD_EMULATOR := true
+  BUILD_EMULATOR ?= true
 endif  # HOST_OS is darwin
 
 $(shell echo 'VERSIONS_CHECKED := $(VERSION_CHECK_SEQUENCE_NUMBER)' \
