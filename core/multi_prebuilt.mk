@@ -108,7 +108,8 @@ $(call auto-prebuilt-boilerplate, \
     $($(if $(prebuilt_is_host),HOST,TARGET)_OUT_INTERMEDIATE_LIBRARIES), \
     , \
     , \
-    $(prebuilt_strip_module))
+    $(prebuilt_strip_module), \
+    $(LOCAL_MODULE_PATH))
 
 $(call auto-prebuilt-boilerplate, \
     $(prebuilt_executables), \
