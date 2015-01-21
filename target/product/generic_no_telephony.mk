@@ -44,7 +44,6 @@ PRODUCT_PACKAGES += \
     libvideoeditorplayer \
 
 PRODUCT_PACKAGES += \
-    audio.primary.default \
     audio_policy.default \
     local_time.default \
     vibrator.default \
