@@ -585,11 +585,12 @@ import_includes_deps := $(strip \
       $(call intermediates-dir-for,SHARED_LIBRARIES,$(l),$(LOCAL_IS_HOST_MODULE))/export_includes) \
     $(foreach l, $(LOCAL_STATIC_LIBRARIES) $(LOCAL_WHOLE_STATIC_LIBRARIES), \
       $(call intermediates-dir-for,STATIC_LIBRARIES,$(l),$(LOCAL_IS_HOST_MODULE))/export_includes))
-$(import_includes) : $(import_includes_deps)
+$(import_includes): PRIVATE_IMPORT_EXPORT_INCLUDES := $(import_includes_deps)
+$(import_includes) : $(LOCAL_MODULE_MAKEFILE) $(import_includes_deps)
 	@echo Import includes file: $@
 	$(hide) mkdir -p $(dir $@) && rm -f $@
 ifdef import_includes_deps
-	$(hide) for f in $^; do \
+	$(hide) for f in $(PRIVATE_IMPORT_EXPORT_INCLUDES); do \
 	  cat $$f >> $@; \
 	done
 else
