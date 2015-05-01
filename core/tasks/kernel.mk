@@ -38,15 +38,15 @@ FIRMWARE_ENABLED := $(shell grep ^CONFIG_FIRMWARE_IN_KERNEL=y $(KERNEL_CONFIG_FI
 # This is the simplest way I can think.
 KERNEL_DOTCONFIG_FILE := $(KBUILD_OUTPUT)/.config
 KERNEL_ARCH_CHANGED := $(if $(filter 0,$(shell grep -s ^$(if $(filter x86,$(TARGET_KERNEL_ARCH)),\#.)CONFIG_64BIT $(KERNEL_DOTCONFIG_FILE) | wc -l)),FORCE)
-$(KERNEL_DOTCONFIG_FILE): $(KERNEL_CONFIG_FILE) $(KERNEL_ARCH_CHANGED) | $(ACP)
-	$(copy-file-to-new-target)
+$(KERNEL_DOTCONFIG_FILE): $(KERNEL_CONFIG_FILE) $(wildcard $(TARGET_KERNEL_DIFFCONFIG)) $(KERNEL_ARCH_CHANGED)
+	$(hide) cat $(wildcard $^) > $@
+	$(mk_kernel) oldnoconfig
 
 # bison is needed to build kernel and external modules from source
 BISON := $(HOST_OUT_EXECUTABLES)/bison$(HOST_EXECUTABLE_SUFFIX)
 
 BUILT_KERNEL_TARGET := $(KBUILD_OUTPUT)/arch/$(TARGET_ARCH)/boot/$(KERNEL_TARGET)
-$(INSTALLED_KERNEL_TARGET): $(KERNEL_DOTCONFIG_FILE) $(BISON)
-	$(mk_kernel) oldnoconfig
+$(INSTALLED_KERNEL_TARGET): $(KERNEL_DOTCONFIG_FILE) | $($(ACP) $(BISON)
 	$(mk_kernel) $(KERNEL_TARGET) $(if $(MOD_ENABLED),modules)
 	$(hide) $(ACP) -fp $(BUILT_KERNEL_TARGET) $@
 	$(if $(FIRMWARE_ENABLED),$(mk_kernel) INSTALL_MOD_PATH=$(abspath $(TARGET_OUT)) firmware_install)
