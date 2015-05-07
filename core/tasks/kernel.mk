@@ -39,7 +39,7 @@ FIRMWARE_ENABLED := $(shell grep ^CONFIG_FIRMWARE_IN_KERNEL=y $(KERNEL_CONFIG_FI
 KERNEL_DOTCONFIG_FILE := $(KBUILD_OUTPUT)/.config
 KERNEL_ARCH_CHANGED := $(if $(filter 0,$(shell grep -s ^$(if $(filter x86,$(TARGET_KERNEL_ARCH)),\#.)CONFIG_64BIT $(KERNEL_DOTCONFIG_FILE) | wc -l)),FORCE)
 $(KERNEL_DOTCONFIG_FILE): $(KERNEL_CONFIG_FILE) $(wildcard $(TARGET_KERNEL_DIFFCONFIG)) $(KERNEL_ARCH_CHANGED)
-	$(hide) cat $(wildcard $^) > $@
+	$(hide) mkdir -p $(@D) && cat $(wildcard $^) > $@
 	$(mk_kernel) oldnoconfig
 
 # bison is needed to build kernel and external modules from source
