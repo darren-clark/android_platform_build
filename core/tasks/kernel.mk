@@ -77,11 +77,7 @@ $(BUILT_SYSTEMIMAGE): $(KERNEL_MODULES_DEP)
 WL_PATH := $(KERNEL_DIR)/drivers/net/wireless/wl
 WL_ENABLED := $(if $(wildcard $(WL_PATH)),$(shell grep ^CONFIG_WL=[my] $(KERNEL_CONFIG_FILE)))
 WL_ARCH_CHANGED := $(if $(shell file $(WL_PATH)/lib/wlc_hybrid.o_shipped | grep -s $(if $(filter x86,$(TARGET_KERNEL_ARCH)),80386,x86-64)),,FORCE)
-ifeq ($(filter x86,$(TARGET_KERNEL_ARCH)),)
-WL_SRC := $(WL_PATH)/hybrid-v35_64-nodebug-pcoem-6_30_223_141.tar.gz
-else
-WL_SRC := $(WL_PATH)/hybrid-v35-nodebug-pcoem-6_30_223_141.tar.gz
-endif
+WL_SRC := $(WL_PATH)/hybrid-v35$(if $(filter x86,$(TARGET_KERNEL_ARCH)),,_64)-nodebug-pcoem-6_30_223_248.tar.gz
 $(WL_SRC):
 	@echo Downloading $(@F)...
 	$(hide) curl http://www.broadcom.com/docs/linux_sta/$(@F) > $@
